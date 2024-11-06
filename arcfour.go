@@ -1,6 +1,10 @@
 /* arcfour.go */
 package main
 
+type s_arcfour struct {
+	// ...
+}
+
 func main() {
 
 	var key, from, encrypted, decrypted string
