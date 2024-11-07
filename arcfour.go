@@ -42,8 +42,17 @@ func rc4init(key string, size int) Arcfour {
 
 }
 
-func rc4byte() int {
-	return 0
+func rc4byte(p *Arcfour) int {
+
+	p.i = (p.i + 1) % 256
+	p.j = (p.j + p.s[p.i]) % 256
+
+	p.s[p.i], p.s[p.j] = p.s[p.j], p.s[p.i]
+
+	temp := ((p.s[p.i]) + (p.s[p.j])) % 256
+	p.k = int(p.s[temp])
+	return p.k
+
 }
 
 func rc4encrypt(key string, keylen int) string {
@@ -54,15 +63,41 @@ func rc4decrypt(key string, keylen int) string {
 	return rc4encrypt(key, keylen)
 }
 
-func printbin(input string, size int) {
+// func printbin(input []byte, size int) {
 
+// 	assert(size > 0, "size <= 0")
+
+//		for i := 0; i < size; i++ {
+//			if i%2 == 0 {
+//				fmt.Printf(" ")
+//			}
+//			fmt.Printf("%02x", input[i])
+//		}
+//		fmt.Println()
+//	}
+
+func printbin(input interface{}, size int) {
 	assert(size > 0, "size <= 0")
 
-	for i := 0; i < size; i++ {
-		if i%2 == 0 {
-			fmt.Printf(" ")
+	switch v := input.(type) {
+	case string:
+		// If the input is a string, treat it as []byte
+		for i := 0; i < size; i++ {
+			if i%2 == 0 {
+				fmt.Printf(" ")
+			}
+			fmt.Printf("%02x", v[i]) // String characters are just bytes
 		}
-		fmt.Printf("%02x", input[i])
+	case []int:
+		// If the input is a []int8 (slice), treat it as bytes
+		for i := 0; i < size; i++ {
+			if i%2 == 0 {
+				fmt.Printf(" ")
+			}
+			fmt.Printf("%02x", v[i]) // Print as hex values
+		}
+	default:
+		panic("Unsupported input type")
 	}
 	fmt.Println()
 }
@@ -82,12 +117,19 @@ func main() {
 
 	fmt.Println("Initializing encryption...")
 	os.Stdout.Sync()
-	//rc4 = rc4init(key, skey)
+	rc4 := rc4init(key, skey)
 	fmt.Println("Done")
 
 	fmt.Printf("'%s'\n ->", from)
 	//encrypted = rc4encrypt(from, stext)
 
-	printbin(key, skey)
+	byteSlice := make([]byte, 256)
+	for i := 0; i < 256; i++ {
+		byteSlice[i] = byte(rc4.s[i]) // Convert int8 to byte
+	}
+
+	//printbin(key, skey)
+
+	printbin(rc4.s[:], skey)
 
 }
