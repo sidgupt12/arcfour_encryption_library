@@ -110,8 +110,13 @@ func printbin(input interface{}, size int) {
 
 func main() {
 
+	if len(os.Args) < 2 {
+		fmt.Println("Text to be encrypted")
+		os.Exit(1)
+	}
 	key := "tomatoes" // can be 8 bits to 2048 bits
-	from := "Shall I compare thee to a summer's day?"
+	//from := "Shall I compare thee to a summer's day?"
+	from := os.Args[1]
 
 	skey := len(key)
 	stext := len(from)

@@ -5,9 +5,12 @@ all: build run
 
 build:
 	go build -o $(APP_NAME) $(SRC)
+	
 
 run:
-	./$(APP_NAME)
+	@read -p "Enter text to encrypt: " text; \
+	./$(APP_NAME) "$$text"
+
 
 clean:
 	rm -f $(APP_NAME)
