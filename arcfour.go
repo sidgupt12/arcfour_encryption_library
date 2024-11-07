@@ -19,9 +19,7 @@ type Arcfour struct {
 
 func rc4init(key string, size int) Arcfour {
 	var p Arcfour
-	for x := 0; x < 256; x++ {
-		p.s[x] = 0
-	}
+
 	p.i, p.j, p.k = 0, 0, 0
 
 	var temp1, temp2 int
@@ -68,6 +66,7 @@ func rc4decrypt(p *Arcfour, key string, keylen int) string {
 	return rc4encrypt(p, key, keylen)
 }
 
+//this function was limited to only []byte input
 // func printbin(input []byte, size int) {
 
 // 	assert(size > 0, "size <= 0")
@@ -81,6 +80,7 @@ func rc4decrypt(p *Arcfour, key string, keylen int) string {
 //		fmt.Println()
 //	}
 
+// this function solved the problem of only []byte input
 func printbin(input interface{}, size int) {
 	assert(size > 0, "size <= 0")
 
@@ -121,6 +121,7 @@ func main() {
 	fmt.Println("Done")
 
 	fmt.Printf("Original text: '%s'\n ->", from)
+
 	//encrypted = rc4encrypt(from, stext)
 
 	// byteSlice := make([]byte, 256)
