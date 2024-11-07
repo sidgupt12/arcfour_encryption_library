@@ -55,12 +55,17 @@ func rc4byte(p *Arcfour) int {
 
 }
 
-func rc4encrypt(key string, keylen int) string {
-	return ""
+func rc4encrypt(p *Arcfour, ct string, size int) string {
+	encrypted := make([]byte, size)
+
+	for i := 0; i < size; i++ {
+		encrypted[i] = ct[i] ^ byte(rc4byte(p))
+	}
+	return string(encrypted)
 }
 
-func rc4decrypt(key string, keylen int) string {
-	return rc4encrypt(key, keylen)
+func rc4decrypt(p *Arcfour, key string, keylen int) string {
+	return rc4encrypt(p, key, keylen)
 }
 
 // func printbin(input []byte, size int) {
@@ -104,32 +109,34 @@ func printbin(input interface{}, size int) {
 
 func main() {
 
-	//Arcfour * rc4
-
-	var encrypted, decrypted string
-	fmt.Println(encrypted, decrypted)
-
 	key := "tomatoes" // can be 8 bits to 2048 bits
 	from := "Shall I compare thee to a summer's day?"
 
 	skey := len(key)
-	//stext := len(from)
+	stext := len(from)
 
 	fmt.Println("Initializing encryption...")
 	os.Stdout.Sync()
 	rc4 := rc4init(key, skey)
 	fmt.Println("Done")
 
-	fmt.Printf("'%s'\n ->", from)
+	fmt.Printf("Original text: '%s'\n ->", from)
 	//encrypted = rc4encrypt(from, stext)
 
-	byteSlice := make([]byte, 256)
-	for i := 0; i < 256; i++ {
-		byteSlice[i] = byte(rc4.s[i]) // Convert int8 to byte
-	}
+	// byteSlice := make([]byte, 256)
+	// for i := 0; i < 256; i++ {
+	// 	byteSlice[i] = byte(rc4.s[i]) // Convert int8 to byte
+	// }
 
-	//printbin(key, skey)
+	// //printbin(key, skey)
 
-	printbin(rc4.s[:], skey)
+	// printbin(rc4.s[:], skey)
+
+	encrypted := rc4encrypt(&rc4, from, stext)
+	fmt.Printf("encrypted form : '%s'\n", encrypted)
+
+	rc4 = rc4init(key, skey)
+	decrypted := rc4decrypt(&rc4, encrypted, stext)
+	fmt.Printf("decrypted form : '%s'\n", decrypted)
 
 }
