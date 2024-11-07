@@ -6,6 +6,7 @@ import (
 	"os"
 )
 
+// used assert for only testing purposes, should be removed in production
 func assert(cond bool, msg string) {
 	if !cond {
 		panic(msg)
@@ -136,6 +137,7 @@ func main() {
 	encrypted := rc4encrypt(&rc4, from, stext)
 	fmt.Printf("encrypted form : '%s'\n", encrypted)
 
+	//we reinitialize the rc4 struct to decrypt because the state of the struct has changed
 	rc4 = rc4init(key, skey)
 	decrypted := rc4decrypt(&rc4, encrypted, stext)
 	fmt.Printf("decrypted form : '%s'\n", decrypted)
