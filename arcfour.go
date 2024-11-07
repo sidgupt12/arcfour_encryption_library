@@ -12,7 +12,7 @@ func assert(cond bool, msg string) {
 	}
 }
 
-type s_arcfour struct {
+type Arcfour struct {
 	// ...
 }
 
@@ -43,16 +43,15 @@ func printbin(input string, size int) {
 
 func main() {
 
-	Arcfour * rc4
+	//Arcfour * rc4
 
-	var skey, stext int
-	var key, from, encrypted, decrypted string
+	var encrypted, decrypted string
 
-	key = "tomatoes" // can be 8 bits to 2048 bits
-	from = "Shall I compare thee to a summer's day?"
+	key := "tomatoes" // can be 8 bits to 2048 bits
+	from := "Shall I compare thee to a summer's day?"
 
-	skey = len(key)
-	stext = len(from)
+	skey := len(key)
+	stext := len(from)
 
 	fmt.Println("Initializing encryption...")
 	os.Stdout.Sync()
