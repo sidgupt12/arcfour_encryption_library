@@ -135,7 +135,9 @@ func main() {
 	// 	byteSlice[i] = byte(rc4.s[i]) // Convert int8 to byte
 	// }
 
-	// //printbin(key, skey)
+	fmt.Printf("key: %s\n", key)
+	fmt.Print("key in binary: ")
+	printbin(key, skey)
 
 	// printbin(rc4.s[:], skey)
 
